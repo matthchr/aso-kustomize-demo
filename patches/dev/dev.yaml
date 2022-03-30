@@ -1,0 +1,20 @@
+apiVersion: resources.azure.com/v1alpha1api20200601
+kind: ResourceGroup
+metadata:
+  name: cool-website-rg
+spec:
+  azureName: cool-website-rg-dev
+---
+apiVersion: storage.azure.com/v1alpha1api20210401
+kind: StorageAccount
+metadata:
+  name: coolstorageaso
+spec:
+  azureName: coolstorageasodev
+---
+apiVersion: cache.azure.com/v1alpha1api20201201
+kind: Redis
+metadata:
+  name: coolredis
+spec:
+  azureName: coolredisdev
