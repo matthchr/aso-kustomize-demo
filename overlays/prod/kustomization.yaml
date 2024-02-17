@@ -1,0 +1,7 @@
+resources:
+  - ../../base
+
+namespace: todo-prod
+
+patches:
+- path: prod.yaml

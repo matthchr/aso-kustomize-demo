@@ -1,0 +1,15 @@
+resources:
+  - ../../base
+
+namespace: todo-dev
+# nameSuffix:
+#   -v2
+
+patches:
+- path: dev.yaml
+# - patch: |-
+#     - op: replace
+#       path: /spec/location
+#       value: westus2
+#   target:
+#     labelSelector: "location=yes"
