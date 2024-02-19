@@ -29,3 +29,6 @@ helm upgrade --install aso2 aso2/azure-service-operator \
     --set azureClientSecret=$AZURE_CLIENT_SECRET \
     --set crdPattern='resources.azure.com/*;documentdb.azure.com/*;managedidentity.azure.com/*'
 ```
+
+Port forward:
+kubectl port-forward -n todo-dev service/todo-service 8080:80
