@@ -1,0 +1,21 @@
+resources:
+  - ../../base
+
+namespace: todo-dev
+
+patches:
+- path: dev.yaml
+- patch: |-
+    - op: replace
+      path: /metadata/name
+      value: todo-app-rg-dev
+  target:
+    kind: ResourceGroup
+    namespace: todo
+    name: todo-app-rg
+- patch: |-
+    - op: replace
+      path: /spec/owner/name
+      value: todo-app-rg-dev
+  target:
+    kind: UserAssignedIdentity|DatabaseAccount

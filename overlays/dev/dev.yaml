@@ -1,0 +1,27 @@
+apiVersion: documentdb.azure.com/v1api20210515
+kind: DatabaseAccount
+metadata:
+  name: todo-app-sqldb
+  namespace: todo
+spec:
+  azureName: todo-app-sqldb-dev
+---
+apiVersion: documentdb.azure.com/v1api20210515
+kind: SqlRoleAssignment
+metadata:
+  name: todo-app-role-assignment
+  namespace: todo
+spec:
+  # This RoleDefinition corresponds to "Cosmos DB Built-in Data Contributor". See https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-setup-rbac#built-in-role-definitions for more.
+  roleDefinitionId: /subscriptions/82acd5bb-4206-47d4-9c12-a65db028483d/resourceGroups/todo-app-rg-dev/providers/Microsoft.DocumentDB/databaseAccounts/todo-app-sqldb-dev/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002
+  scope: /subscriptions/82acd5bb-4206-47d4-9c12-a65db028483d/resourceGroups/todo-app-rg-dev/providers/Microsoft.DocumentDB/databaseAccounts/todo-app-sqldb-dev
+---
+apiVersion: managedidentity.azure.com/v1api20220131preview
+kind: FederatedIdentityCredential
+metadata:
+  name: todo-app-fic
+  namespace: todo
+spec:
+  issuer: https://eastus.oic.prod-aks.azure.com/72f988bf-86f1-41af-91ab-2d7cd011db47/f4d32229-0647-4825-8460-2baf8d8dcd2a/
+  # For Workload Identity, Subject should always be system:serviceaccount:<namespace>:<serviceaccount>
+  subject: system:serviceaccount:todo-dev:cosmos-service-account

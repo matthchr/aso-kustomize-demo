@@ -1,2 +1,3 @@
 resources:
- - coolsite.yaml
+ - app.yaml
+ - azure.yaml

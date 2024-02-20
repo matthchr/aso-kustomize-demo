@@ -1,6 +1,0 @@
-resources:
-  - ../../base
-
-namespace: coolsite-dev
-patches:
-  - dev.yaml
