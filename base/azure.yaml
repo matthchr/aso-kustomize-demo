@@ -9,25 +9,24 @@ metadata:
   name: todo-app-rg
   namespace: todo
   labels:
-    location: yes
     infra: azure
 spec:
   location: eastus
 ---
+# Here's the identity which will be used by the app
 apiVersion: managedidentity.azure.com/v1api20181130
 kind: UserAssignedIdentity
 metadata:
   name: todo-app-identity
   namespace: todo
   labels:
-    location: yes
     infra: azure
 spec:
   location: eastus
   owner:
     name: todo-app-rg
   operatorSpec:
-    configMaps:
+    configMaps:  # Exporting the identities principalId/clientId to be consumed by the application pod
       principalId:
         name: todo-app-identity-settings
         key: principalId
@@ -46,7 +45,6 @@ spec:
   owner:
     name: todo-app-identity
   audiences:
-    # For Workload Identity, Audiences should always be "api://AzureADTokenExchange"
     - api://AzureADTokenExchange
   # For Workload Identity, Issuer should be the OIDC endpoint of the cluster. For AKS this will look like
   # https://oidc.prod-aks.azure.com/00000000-0000-0000-0000-00000000000/
@@ -60,7 +58,6 @@ metadata:
   name: todo-app-sqldb
   namespace: todo
   labels:
-    location: yes
     infra: azure
 spec:
   location: eastus
@@ -72,7 +69,7 @@ spec:
   databaseAccountOfferType: Standard
   operatorSpec:
     secrets:
-      documentEndpoint:
+      documentEndpoint:  # Also exporting the endpoint of the CosmosDB for consumption by the application pod
         name: todo-app-sqldb-connection-settings
         key: documentEndpoint
 ---
@@ -82,7 +79,6 @@ metadata:
   name: todo-app-sql-db
   namespace: todo
   labels:
-    location: yes
     infra: azure
 spec:
   location: eastus
@@ -121,7 +117,7 @@ metadata:
 spec:
   owner:
     name: todo-app-sqldb
-  principalIdFromConfig:
+  principalIdFromConfig:  # Granting access to the identity created above
     name: todo-app-identity-settings
     key: principalId
   # This RoleDefinition corresponds to "Cosmos DB Built-in Data Contributor". See https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-setup-rbac#built-in-role-definitions for more.
